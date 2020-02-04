@@ -11,6 +11,8 @@ import time
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
+
+
 #twitter credentials and authentication
 
 auth = tweepy.OAuthHandler(os.getenv("consumer_key"), os.getenv("consumer_secret"))
