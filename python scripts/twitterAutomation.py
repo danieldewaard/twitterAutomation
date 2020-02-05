@@ -10,24 +10,31 @@ import time
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
-
-
-
-#twitter credentials and authentication
-
-auth = tweepy.OAuthHandler(os.getenv("consumer_key"), os.getenv("consumer_secret"))
-auth.set_access_token(os.getenv("access_token"), os.getenv("access_token_secret"))
-
-api = tweepy.API(auth)
-
-#sourcing the weather
-
-
 i = 1
 
-def do_automation(): 
+def twitter_authentication():
+
+    #twitter credentials and authentication
+    auth = tweepy.OAuthHandler(os.getenv("consumer_key"), os.getenv("consumer_secret"))
+    auth.set_access_token(os.getenv("access_token"), os.getenv("access_token_secret"))
+
+    api = tweepy.API(auth)
+    
+    try:
+        api.verify_credentials()
+    except Exception as e:
+        logger.error("Error creating API", exc_info=True)
+        raise e
+    logger.info("API created")
+    
+    return api
+
+def twitter_automation(api): 
+    
     global i
     i = i + 1
+    
+    #sourcing the weather
     response = requests.get("http://api.openweathermap.org/data/2.5/weather?q=Taipei&units=metric&appid="+os.getenv("weatherAPI_key"))
     response = json.loads(response.text)
 
@@ -35,13 +42,9 @@ def do_automation():
     weather_detailed = (response["weather"][0]["description"]).lower()
     temperature = str(response["main"]["temp"])
 
-    print(weather)
-    print(weather_detailed)
-    print(temperature)
+    logger.info("Weather successfully obtained!\nCurrent weather: " + weather+ "\nDetailed weather: " + weather_detailed+"\nTemperature: "+ temperature)
 
     weather_detailed_words = weather_detailed.split()
-
-    print(weather_detailed_words)
 
     if "rain" in weather_detailed_words:
         rain_flag = 1
@@ -52,17 +55,23 @@ def do_automation():
         rain_status = "It is not raining in Taipei..."
         rain_hashtag = "#norain"
 
-    print("rain flag: "+str(rain_flag))    
+    logger.info("rain status: "+str(rain_flag))    
 
     #updating the twitter status    
-
-    status = api.update_status(str(i)+ rain_status + "\nCurrent temperature: "+temperature+" degrees \nCurrent weather: "+weather_detailed+" \n#Taipei #Taiwan #Weather " + rain_hashtag)
-
-    print(status.text)
+    try:
+        status = api.update_status(rain_status + "\nCurrent temperature: "+temperature+" degrees \nCurrent weather: "+weather_detailed+" \n#Taipei #Taiwan #Weather " + rain_hashtag +" #"+str(i))
+    except Exception as e:
+        logger.error("Error posting tweet", exc_info=True)
+        raise e
+        
+    logger.info("THe following status was posted successfully: "+status.text) 
     
 def main():
+    
+    api = twitter_authentication()
+    
     while True:
-        do_automation()
+        twitter_automation(api)
         time.sleep(10)
         
 if __name__ == "__main__":
