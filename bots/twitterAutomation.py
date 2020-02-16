@@ -64,7 +64,7 @@ def twitter_automation(api):
         logger.error("Error posting tweet", exc_info=True)
         raise e
         
-    logger.info("THe following status was posted successfully: "+status.text) 
+    logger.info("The following status was posted successfully: "+status.text) 
     
 def main():
     
