@@ -40,7 +40,7 @@ def twitter_automation(api):
 
     weather = response["weather"][0]["main"]
     weather_detailed = (response["weather"][0]["description"]).lower()
-    temperature = str(response["main"]["temp"])
+    temperature = str(round(response["main"]["temp"],1))
 
     logger.info("Weather successfully obtained!\nCurrent weather: " + weather+ "\nDetailed weather: " + weather_detailed+"\nTemperature: "+ temperature)
 
