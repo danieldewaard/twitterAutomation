@@ -77,7 +77,7 @@ def twitter_automation(api):
     
         #updating the twitter status    
         try:
-            status = api.update_status(rain_status + "\nCurrent temperature: "+temperature+" degrees \nCurrent weather: "+weather_detailed+" \n#Taipei #Taiwan #weather " + rain_hashtag +" #")
+            status = api.update_status(rain_status + "\nCurrent temperature: "+temperature+" degrees \nCurrent weather: "+weather_detailed+" \n#Taipei #Taiwan #weather " + rain_hashtag)
             logger.info("Tweet posted, it is not raining")
         except Exception as e:
             logger.error("Error posting tweet", exc_info=True)
