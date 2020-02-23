@@ -102,11 +102,11 @@ def twitter_automation(api, memes):
     weather_detailed = (response["weather"][0]["description"]).lower()
     temperature = str(round(response["main"]["temp"],1))
 
-    logger.info("Weather successfully obtained!\nCurrent weather: " + weather+ "\nDetailed weather: " + weather_detailed+"\nTemperature: "+ temperature)
+    logger.info("Weather successfully obtained!\nCurrent weather: " +weather+"\nDetailed weather: " + weather_detailed+"\nTemperature: "+ temperature)
 
     weather_detailed_words = weather_detailed.split()
 
-    if "rain" or "drizzle" in weather_detailed_words:
+    if ("rain" or "drizzle") in weather_detailed_words:
         rain_flag = 1
         rain_status = "It is raining in Taipei!!"
         rain_hashtag = "#rain"
@@ -131,8 +131,11 @@ def twitter_automation(api, memes):
             #updating the twitter status no meme    
             try:
                 status = api.update_status(rain_status + "\nCurrent temperature: "+temperature+" degrees \nCurrent weather: "+weather_detailed+" \n#Taipei #Taiwan #weather " + rain_hashtag)
+                
                 logger.info("Tweet posted. "+rain_status)
+                
             except Exception as e:
+                
                 logger.error("Error posting tweet", exc_info=True)
                 raise e
             
@@ -144,8 +147,11 @@ def twitter_automation(api, memes):
             #updating the twitter status with a meme    
             try:
                 status = api.update_with_media("../photos/memes/modified/"+memes[rand_meme],rain_status + "\nCurrent temperature: "+temperature+" degrees \nCurrent weather: "+weather_detailed+" \n#Taipei #Taiwan #weather " + rain_hashtag +" #memes")
-                logger.info("Tweet posted. " +rain_status+  " A meme was also posted")
+                
+                logger.info("Tweet posted. "+rain_status+" A meme was also posted")
+                
             except Exception as e:
+                
                 logger.error("Error posting tweet", exc_info=True)
                 raise e
             
