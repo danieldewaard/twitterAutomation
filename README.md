@@ -12,6 +12,6 @@ Planned new features:
     - Include a time since last rain event counter. 
     - Round decimal places to one decimal place (completed 21/2/19)
     - Redeploy to remove extra # from non rain tweets (completed 22/2/19)
-    - Use word generation APIs to make wording ot tweets more varied. 
+    - Use word generation APIs to make wording of tweets more varied. 
 3. Automatically retweet tweets about Taipei weather
 4. Provide air quality updates 
