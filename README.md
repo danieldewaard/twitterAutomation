@@ -13,5 +13,6 @@ Planned new features:
     - Round decimal places to one decimal place (completed 21/2/19)
     - Redeploy to remove extra # from non rain tweets (completed 22/2/19)
     - Use word generation APIs to make wording of tweets more varied. 
+    - Fix the fact that "drizzle" does not show up as rain. 
 3. Automatically retweet tweets about Taipei weather
 4. Provide air quality updates 
