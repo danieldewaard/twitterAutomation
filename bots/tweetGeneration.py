@@ -45,7 +45,7 @@ def generate_greeting_words():
     words_ml_hello = request_words("hello","ml")
     greeting_words = []
     
-    greeting_exclusions = ['patty','pie','farewells','goodby','hug','good-bye','bye-bye','salvation','bow','anyone','pedicure','mum','anyone','breaker','announcer','amy','someone','anybody','somebody','bye','mom','goodbye','hagrid','operator','elise','eleanor','molly','pete','sakes','aha','pai']
+    greeting_exclusions = ['roy', 'patty','pie','farewells','goodby','hug','good-bye','bye-bye','salvation','bow','anyone','pedicure','mum','anyone','breaker','announcer','amy','someone','anybody','somebody','bye','mom','goodbye','hagrid','operator','elise','eleanor','molly','pete','sakes','aha','pai']
     
     for x in words_ml_hello: 
         
@@ -68,7 +68,7 @@ def generate_friend_words():
 
     return friend_words
 
-def main():
+def greeting_generation():
     
     class tweet_structure:
         
@@ -110,15 +110,13 @@ def main():
                 
                     tweet.rhyme_word_1 = random_word_from_list(rhymes,0.5) 
                     
-            string = (tweet.greeting_word + " " + tweet.rhyme_word_1 + " " + tweet.friend_word).strip().capitalize() 
+            string = (tweet.greeting_word + " " + tweet.rhyme_word_1 + " " + tweet.friend_word).strip().capitalize()
             
             tweet.tweet_string = ' '.join(string.split()).replace(" ", ", ")
-            
-    for x in range(0, 50):  
-        tweet1 = tweet_structure()
-        tweet1.define_structure()
-        tweet1.create_tweet()
-        logger.info(tweet1.tweet_string)
-    
-if __name__ == "__main__":
-    main()
+            tweet.tweet_string = tweet.tweet_string+"! "
+    tweet1 = tweet_structure()
+    tweet1.define_structure()
+    tweet1.create_tweet()
+    logger.info(tweet1.tweet_string)
+
+    return tweet1.tweet_string

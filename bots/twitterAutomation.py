@@ -9,6 +9,8 @@ import logging
 import time
 import random
 
+from tweetGeneration import greeting_generation
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 i = 0
@@ -105,14 +107,20 @@ def twitter_automation(api, memes):
     logger.info("Weather successfully obtained!\nCurrent weather: " +weather+"\nDetailed weather: " + weather_detailed+"\nTemperature: "+ temperature)
 
     weather_detailed_words = weather_detailed.split()
-
-    if ("rain" or "drizzle") in weather_detailed_words:
+    
+    if "rain" in weather_detailed_words:
         rain_flag = 1
-        rain_status = "It is raining in Taipei!!"
+        rain_status = "It is raining in Taipei!"
         rain_hashtag = "#rain"
+        
+    elif "drizzle" in weather_detailed_words:
+        rain_flag = 1
+        rain_status = "It is raining in Taipei!"
+        rain_hashtag = "#rain"
+    
     else: 
         rain_flag = 0
-        rain_status = "It is not raining in Taipei..."
+        rain_status = "It is not raining in Taipei."
         rain_hashtag = "#norain"
 
     logger.info("rain status: "+str(rain_flag))    
@@ -120,7 +128,9 @@ def twitter_automation(api, memes):
     time_flag = timing_function(rain_flag)
     
     if time_flag == 1: 
-
+        
+        greeting = greeting_generation()
+        
         should_meme_be_posted = random.randrange(0,10)
         
         if rain_flag == 0:
@@ -130,7 +140,7 @@ def twitter_automation(api, memes):
 
             #updating the twitter status no meme    
             try:
-                status = api.update_status(rain_status + "\nCurrent temperature: "+temperature+" degrees \nCurrent weather: "+weather_detailed+" \n#Taipei #Taiwan #weather " + rain_hashtag)
+                status = api.update_status(greeting + rain_status + " It is currently "+temperature+" degrees. Current weather: " +weather_detailed+". #Taipei #Taiwan #weather " + rain_hashtag)
                 
                 logger.info("Tweet posted. "+rain_status)
                 
@@ -146,7 +156,7 @@ def twitter_automation(api, memes):
             
             #updating the twitter status with a meme    
             try:
-                status = api.update_with_media("../photos/memes/modified/"+memes[rand_meme],rain_status + "\nCurrent temperature: "+temperature+" degrees \nCurrent weather: "+weather_detailed+" \n#Taipei #Taiwan #weather " + rain_hashtag +" #memes")
+                status = api.update_with_media("../photos/memes/modified/"+memes[rand_meme],greeting  + rain_status + " It is currently "+temperature+" degrees. Current weather: " +weather_detailed+". #Taipei #Taiwan #weather " + rain_hashtag +" #memes")
                 
                 logger.info("Tweet posted. "+rain_status+" A meme was also posted")
                 
